@@ -146,8 +146,7 @@ func fetchCollectionAccountCasesHigherThanPaymentId(paymntid int64) ([]ViewColle
 	SELECT distinct  v.collectionaccountid, max(dp.paymentid) pid from Aptic_Fact_payment dp
 		JOIN dat_bankaccount db ON dp.bankaccountid = db.bankaccountid
 		JOIN dat_trans dt ON dp.paymentid = dt.paymentid
-		JOIN dat_collectionaccountlink cal ON dt.accountid = cal.accountid
-		JOIN view_collectionaccount v on cal.collectionaccountid = v.collectionaccountid
+		JOIN view_collectionaccount v ON dt.accountid = v.accountid
 	WHERE db.ownertype = 1
 	AND dp.paymentid > %d
 	AND v.closureid is null
@@ -178,8 +177,7 @@ func fetchCollectionAccountCases() ([]ViewCollectionAccount, error) {
 		SELECT distinct  v.collectionaccountid, max(dp.paymentid) pid from Aptic_Fact_payment dp
 			JOIN dat_bankaccount db ON dp.bankaccountid = db.bankaccountid
 			JOIN dat_trans dt ON dp.paymentid = dt.paymentid
-			JOIN dat_collectionaccountlink cal ON dt.accountid = cal.accountid
-			JOIN view_collectionaccount v on cal.collectionaccountid = v.collectionaccountid
+			JOIN view_collectionaccount v ON dt.accountid = v.accountid
 		WHERE db.ownertype = 1
 		AND cast(dp.loggedat as date) = cast(GetDate() as date)
 		AND v.closureid is null
